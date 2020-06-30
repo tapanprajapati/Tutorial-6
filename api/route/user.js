@@ -49,12 +49,10 @@ router.post('/add_user', (req, res)=>{
     })
     .catch(err=>{
         console.log(err);
-        res.status(400).json({
+        res.status(500).json({
             message:err.message
         });
-    });
-    
+    }); 
 });
-
 
 module.exports = router;
