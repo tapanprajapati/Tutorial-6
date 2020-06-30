@@ -4,6 +4,17 @@ const router = express.Router();
 
 const User = require('../model/user');
 
+router.get('',(req,res)=>{
+    const message = {
+        GET_ALL: "/user/get_users/",
+        GET_ONE: "/user/get_users/:username",
+        POST: "/user/add_user/",
+        PUT: "/user/update_user/",
+    }
+
+    res.status(400).send(message);
+});
+
 router.get('/get_users',(req,res)=>{
     User.find()
     .exec()
@@ -23,6 +34,12 @@ router.get('/get_users/:username',(req,res)=>{
     User.findOne({username:req.params.username})
     .exec()
     .then(data=>{
+        if(data==null)
+        {
+            res.status(400).json({
+                message: 'User not found'
+            })
+        }
         console.log(data);
         res.status(200).json(data);
     })
