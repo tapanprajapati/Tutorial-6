@@ -72,4 +72,26 @@ router.post('/add_user', (req, res)=>{
     }); 
 });
 
+router.put('/update_user', (req,res) => {
+    User.updateOne({email:req.body.email},{username: req.body.username})
+    .then(result=>{
+        if(result.n === 0)
+        {
+            res.status(400).json(`No Record Found: ${req.body.email}`)
+            return;
+        }
+
+        if(result.nModified === 0)
+        {
+            res.status(200).json(`Already Updto Date: ${req.body.email} -> ${req.body.username}`)
+            return;
+        }
+
+        res.status(200).json(`Record Updated`);
+    })
+    .catch(err => {
+        res.status(500).json(err.message);
+    })
+});
+
 module.exports = router;
