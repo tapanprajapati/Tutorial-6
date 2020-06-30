@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 const User = require('../model/user');
-const Joi = require('joi');
 
 router.get('/get_users',(req,res)=>{
     User.find()
@@ -35,7 +34,27 @@ router.get('/get_users/:username',(req,res)=>{
     });
 });
 
+router.post('/add_user', (req, res)=>{
+    const user = new User({
+        _id: new mongoose.Types.ObjectId(), 
+        username: req.body.username,
+        email: req.body.email 
+    });
 
+    user.save().then(result=>{
+        console.log(result);
+        res.status(201).json({
+            message:"User data added to database"
+        });
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(400).json({
+            message:err.message
+        });
+    });
+    
+});
 
 
 module.exports = router;
